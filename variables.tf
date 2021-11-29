@@ -12,3 +12,9 @@ variable "ttl" {
   description = "The name we should use for the mail from parameter"
   type        = string
 }
+
+variable "create_root_txt" {
+  description = "Should this module create the root TXT record for the zone?"
+  type        = bool
+  default     = false
+}

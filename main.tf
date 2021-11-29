@@ -54,6 +54,7 @@ resource "aws_route53_record" "this_amazonses_dkim_record" {
 }
 
 resource "aws_route53_record" "this_amazonses_txt" {
+  count   = var.create_root_txt == true ? 1 : 0
   zone_id = data.aws_route53_zone.this.zone_id
   name    = data.aws_route53_zone.this.name
   type    = "TXT"
