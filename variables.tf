@@ -18,3 +18,15 @@ variable "create_root_txt" {
   type        = bool
   default     = false
 }
+
+variable "create_root_mx" {
+  description = "Should this module create the root MX record for the zone?"
+  type        = bool
+  default     = false
+}
+
+variable "create_root_autodiscover" {
+  description = "Should this module create the root autodiscover record for the zone?"
+  type        = bool
+  default     = false
+}

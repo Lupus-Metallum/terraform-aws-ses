@@ -30,6 +30,7 @@ resource "aws_ses_domain_identity_verification" "this" {
 }
 
 resource "aws_route53_record" "this_mx" {
+  count   = var.create_root_mx ? 1 : 0
   zone_id = data.aws_route53_zone.this.zone_id
   name    = data.aws_route53_zone.this.name
   type    = "MX"
@@ -37,6 +38,7 @@ resource "aws_route53_record" "this_mx" {
   records = ["10 inbound-smtp.us-east-1.amazonaws.com."]
 }
 resource "aws_route53_record" "this_autodiscover" {
+  count   = var.create_root_autodiscover ? 1 : 0
   zone_id = data.aws_route53_zone.this.zone_id
   name    = "autodiscover.${data.aws_route53_zone.this.name}"
   type    = "CNAME"
