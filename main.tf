@@ -2,6 +2,8 @@ data "aws_route53_zone" "this" {
   zone_id = var.zone_id
 }
 
+data "aws_region" "current" {}
+
 resource "aws_ses_domain_identity" "this" {
   domain = data.aws_route53_zone.this.name
 }
@@ -35,7 +37,7 @@ resource "aws_route53_record" "this_mx" {
   name    = data.aws_route53_zone.this.name
   type    = "MX"
   ttl     = var.ttl
-  records = ["10 inbound-smtp.us-east-1.amazonaws.com."]
+  records = ["10 inbound-smtp.${data.aws_region.current.name}.amazonaws.com."]
 }
 resource "aws_route53_record" "this_autodiscover" {
   count   = var.create_root_autodiscover ? 1 : 0
@@ -43,7 +45,7 @@ resource "aws_route53_record" "this_autodiscover" {
   name    = "autodiscover.${data.aws_route53_zone.this.name}"
   type    = "CNAME"
   ttl     = var.ttl
-  records = ["autodiscover.mail.us-east-1.awsapps.com."]
+  records = ["autodiscover.mail.${data.aws_region.current.name}.awsapps.com."]
 }
 
 resource "aws_route53_record" "this_amazonses_dkim_record" {
@@ -77,7 +79,7 @@ resource "aws_route53_record" "this_ses_domain_mail_from_mx" {
   name    = aws_ses_domain_mail_from.this.mail_from_domain
   type    = "MX"
   ttl     = var.ttl
-  records = ["10 feedback-smtp.us-east-1.amazonses.com"]
+  records = ["10 feedback-smtp.${data.aws_region.current.name}.amazonses.com"]
 }
 
 resource "aws_route53_record" "this_ses_domain_mail_from_txt" {
